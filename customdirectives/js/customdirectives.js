@@ -84,7 +84,9 @@ cds.directive('nameData',function(){
             // to parent $scope variable
             personObject : '=' // refers to 'person-object' custom attr. in firstview.htm
         },
-        replace: false
+        replace: false,
+        // Ensure that transclude=true to persist data within <name-data> tags in firstview.htm
+        transclude: true
     };    
 });
 
