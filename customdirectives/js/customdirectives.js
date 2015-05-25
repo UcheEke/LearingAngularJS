@@ -70,7 +70,6 @@ cds.controller('secondController',['$scope','$log',
                 person.address.city + ' ' +
                 person.address.postcode;
         };
-       
         $log.info('We are using the second controller!');
     }]);
 
@@ -80,6 +79,11 @@ cds.controller('secondController',['$scope','$log',
 cds.directive('nameData',function(){
     return {
         templateUrl : 'directives/nameData.htm',
+        scope: {
+            // Scope Isolation: Creates 'deny-all except' access-list 
+            // to parent $scope variable
+            personObject : '=' // refers to 'person-object' custom attr. in firstview.htm
+        },
         replace: false
     };    
 });
@@ -90,6 +94,13 @@ cds.directive('nameData',function(){
 cds.directive('peopleData',function(){
     return {
         templateUrl : 'directives/peopleData.htm',
+        scope : {
+            personName : '@', // Read-only access to personName
+            personAge : '@',
+            personOcc : '@',
+            personObject : '=',
+            fnFormattedAddress : '&' // Function call mapping from parent scope to restricted scope
+        },
         replace: false
     };    
 });

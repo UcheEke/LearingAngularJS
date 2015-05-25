@@ -3,6 +3,15 @@
   <div class="panel-heading"><strong>Names &amp; Addresses</strong></div>
   <!-- List group -->
   <ul class="list-group">
-    <li class="list-group-item" ng-repeat='person in people'><people-data></people-data></li>
+    <li class="list-group-item" ng-repeat='person in people'>
+    <!-- Example of read-only scope restriction ('@') and access to a function ('&') in parent scope -->
+    <!-- Remember normalised naming convention 'a-b' here maps to 'aB' in Javascript directive defn -->
+        <people-data person-name='{{person.name}}'
+                     person-age='{{person.age}}'
+                     person-occ='{{person.occupation}}'
+                     person-object='person' 
+                     fn-formatted-address='formattedAddress(person)'>
+        </people-data>
+    </li>
   </ul>
 </div>
