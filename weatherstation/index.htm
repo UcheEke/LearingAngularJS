@@ -29,13 +29,15 @@
 					<a class="navbar-brand" href="/">Weather Station SPA</a>
 				</div>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="#/"><i class="fa fa-home"></i>Home</a></li>
+                    <li><a href="#/forecast"><i class="fa fa-home"></i>Forecast</a></li>
 				</ul>
 			</div>
 			</nav>
 		</header>
         <div class="container">
             <!-- The fun starts here.... -->
+            <div ng-view></div>
 		</div>
     </body>
 </html>
