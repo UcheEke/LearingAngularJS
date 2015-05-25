@@ -91,7 +91,7 @@ cds.directive('nameData',function(){
 // Custom directive 'peopleData' works with the <people-data> tags in secondview.htm
 //(NB: bumped into AngularJS known bug when replace=true --> 
 // http://stackoverflow.com/questions/19233372/template-must-have-exactly-one-root-element-with-custom-directive-replace-true)
-cds.directive('peopleData',function(){
+cds.directive('peopleData',function($log){
     return {
         templateUrl : 'directives/peopleData.htm',
         scope : {
@@ -101,6 +101,24 @@ cds.directive('peopleData',function(){
             personObject : '=',
             fnFormattedAddress : '&' // Function call mapping from parent scope to restricted scope
         },
-        replace: false
-    };    
+        replace: false,
+        // compile returning the commonly used post-link can be replaced with 'link:'
+        // and the code following 'post:'
+        compile: function(element, attrs){
+            $log.info('Compiling...');
+            $log.info(element.html());
+            
+            return {
+                // Avoid using pre-link as far as possible
+                pre : function(scope, elements, attrs){
+                    $log.info('Pre-Linking...');
+                    $log.info(elements);
+                },
+                post: function(scope, elements, attrs){
+                    $log.info('Post-Linking...');
+                    $log.info(elements);
+                },
+            };
+        }
+    };        
 });

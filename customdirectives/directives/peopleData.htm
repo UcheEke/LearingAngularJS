@@ -1,3 +1,5 @@
+<!-- {{ params }} refer to restricted scope variables -->
 <h4><strong>{{ personName }}</strong></h4>
 <h5>{{personAge}},{{personOcc}}</h5>
+<!--{{function call}} require a mapping from constructor parameter to restricted scope variable }}-->
 <h5>Address: {{ fnFormattedAddress({ person : personObject}) }}</h5>
