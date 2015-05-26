@@ -1,1 +1,17 @@
-<h3 ng-model='forecastCity'>Forecast for {{ forecastCity }}</h3>
+<div class="page-header">
+  <h1>Forecast for {{ city }} <br/>
+  <small>Lat: {{ lat }}, Long: {{ long }}</small></h1>
+</div>
+
+<ul class="nav nav-tabs">
+  <li role="presentation" ng-class="{ 'active' : days === '2' }"><a href="#/forecast/2">2-day</a></li>
+  <li role="presentation" ng-class="{ 'active' : days === '5' }"><a href="#/forecast/5">5-day</a></li>
+  <li role="presentation" ng-class="{ 'active' : days === '7' }"><a href="#/forecast/7">7-day</a></li>
+</ul>
+
+<ul class="list-group">
+  <li class="list-group-item" ng-repeat='w in weatherResult.lis7'>
+       {{convertToDate(w.dt)}}<br/>
+       {{convertToCentigrade(w.temp.day)&#176;C}}
+  </li>
+</ul>

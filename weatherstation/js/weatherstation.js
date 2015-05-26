@@ -1,55 +1,66 @@
-// Define the application 'weatherApp' as an AngularJS module.
-// Include the dependencies as listed in index.htm (route and resource)
-var weatherApp = angular.module('weatherApp',['ngRoute', 'ngResource']);
+// MODULE
+var weatherApp = angular.module('weatherApp', ['ngRoute', 'ngResource']);
 
-// Add routes to the application. We will have two views to choose from
-// 1. The Home view @ '/'
-// 2. The Forecast view @ '/forecast'
-// Each view will have a seperate controller
-weatherApp.config(function($routeProvider){
+// ROUTES
+weatherApp.config(function ($routeProvider) {
+   
     $routeProvider
-    .when('/',{
-            templateUrl: 'pages/home.htm',
-            controller: 'homeController'
-        })
-    .when('/forecast',{
-            templateUrl: 'pages/forecast.htm',
-            controller: 'forecastController'
+    
+    .when('/', {
+        templateUrl: 'pages/home.htm',
+        controller: 'homeController'
+    })
+    
+    .when('/forecast', {
+        templateUrl: 'pages/forecast.htm',
+        controller: 'forecastController'
+    })
+    
+    .when('/forecast/:days', {
+        templateUrl: 'pages/forecast.htm',
+        controller: 'forecastController'
+    })
+    
+});
+
+// SERVICES
+weatherApp.service('cityService', function() {
+   
+    this.city = "New York, NY";
+    
+});
+
+// CONTROLLERS
+weatherApp.controller('homeController', ['$scope', 'cityService', function($scope, cityService) {
+    
+    $scope.city = cityService.city;
+    
+    $scope.$watch('city', function() {
+       cityService.city = $scope.city; 
     });
-});
+    
+}]);
 
-// Define a custom service, srvInfo
-weatherApp.service('srvCity',function(){
-    this.City = '';
-});
+weatherApp.controller('forecastController', ['$scope', '$resource', '$routeParams', 'cityService', function($scope, $resource, $routeParams, cityService) {
+    
+    $scope.city = cityService.city;
+    
+    $scope.days = $routeParams.days || '2';
+    
+    $scope.weatherAPI = $resource("http://api.openweathermap.org/data/2.5/forecast/daily", { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
+    
+    $scope.weatherResult = $scope.weatherAPI.get({ q: $scope.city, cnt: $scope.days });
 
-// Define the controllers
-weatherApp.controller('homeController',['$scope','srvCity',
-    function($scope, srvCity){
+    $scope.convertToCentigrade= function(degK) {
         
-        $scope.City = srvCity.City;
+        return Math.round((5.0/9.0 * (degK - 273)) - 32.0);
         
-        // Set up a $watch function for the 'City' variable in $scope.
-        // If it changes, the digest cycle will update the values connected to it
-        $scope.$watch('City',function(){
-            srvCity.City = $scope.City;
-        });
-        
-        console.log('Service City: ', srvCity.City);
-        console.log('Homepage City: ', $scope.City);
-    }                                    
-]);
-weatherApp.controller('forecastController',['$scope','srvCity',
-    function($scope, srvCity){
-        $scope.forecastCity= srvCity.City;
-        
-        // Remember to update here too....
-        $scope.$watch('forecastCity',function(){
-            $scope.forecastCity = srvCity.City;
-        });
-        console.log('Service City: ', srvCity.City);
-        console.log('Forecast City: ', $scope.City);
     }
-]);
-
+    
+    $scope.convertToDate = function(dt) { 
+      
+        return new Date(dt * 1000);
         
+    };
+    
+}]);
