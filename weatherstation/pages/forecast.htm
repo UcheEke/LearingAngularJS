@@ -10,8 +10,9 @@
 </ul>
 
 <ul class="list-group">
-  <li class="list-group-item" ng-repeat='w in weatherResult.lis7'>
-       {{convertToDate(w.dt)}}<br/>
-       {{convertToCentigrade(w.temp.day)&#176;C}}
+  <li class="list-group-item" ng-repeat='w in weatherResult.list'>
+      <strong>{{convertToDate(w.dt)}}</strong><br/>
+      Range: {{convertToCentigrade(w.temp.min)}}-{{convertToCentigrade(w.temp.max)}}&#176;C
+      <small>({{convertToFahrenheit(w.temp.min)}}-{{convertToFahrenheit(w.temp.max)}}&#176;F)</small>
   </li>
 </ul>
